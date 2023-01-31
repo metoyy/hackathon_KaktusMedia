@@ -48,38 +48,16 @@ def parseArticles(listOfArticles:list):
         list_of_links.append(var2)
         list_of_views.append(var3)
         list_of_images.append(var4)
-    # print(f'{list_of_names}\n\n\n\n\n\n\n\n\n{list_of_links}\n\n\n\n\n\n\n\n\n{list_of_views}')
     return list_of_names,list_of_links,list_of_views,list_of_images
 
 def getDetails(url):
     detSoup=BS(getHtml(url),'lxml')
     title=detSoup.find('div',class_='Article--block-content').find('h1',class_='Article--title').find('span').text
     listOfDescriptions=detSoup.find('div',class_='BbCode').find_all('p')
-    # listOfDescriptions1=detSoup.find('div',class_='BbCode').text
     description=''
     for x in listOfDescriptions:
-        # try:
-            # i=x.findAll('a')
-            # if not i==None:
-            #     for g in i:
-            #         x=x.replace(g,g.text)
-            # x=str(x).replace('<p>','').replace('  ',' ').replace('</p>','\n').strip().replace('<b>',' ').replace('</b>',' ').replace('<em>',' ').replace('</em>',' ').replace('<br>',' ').replace('</br>','\n')
-            # description=description+''.join(x)            
-        # except:
-            x=str(x).replace('<p>','').replace('  ',' ').replace('</p>','\n').strip().replace('<b>',' ').replace('</b>',' ').replace('<em>',' ').replace('</em>',' ').replace('<br>',' ').replace('</br>','\n')
-            
-            # var2=x.index('<a class=')
-            # var3=x.index('</a>')
-            # var4=var3-var2
-            # print(var2,var3,var4)
-            # for h in range(var4):
-            #     var5=[lo for lo in x]
-            #     var5[var2]=''
-            #     ki=''
-            #     for km in var5:
-            #         x=ki+''.join(km)
-
-            description=description+''.join(x)
+        x=str(x.text)
+        description=description+''.join(x)
     return title+'\n\n'+description
 
 
@@ -93,9 +71,7 @@ def getPhoto(url):
         list_ofPhotos=var1.find('div',class_='Gallery Gallery--multi').find_all('a')
         try:
             listPhotos=[]
-            # print(list_ofPhotos)
             for x in list_ofPhotos:
-                # print(x.get('href'))
                 j=x.get('href').strip()
                 listPhotos.append(j)
             set_of_photos=set(listPhotos)
@@ -123,5 +99,4 @@ def getPhoto(url):
 
 
 if __name__=='__main__':
-    # print(getDetails('https://kaktus.media/doc/474699_myzey_izo_povysil_ceny_na_bilet._i_sdelal_ee_raznoy_dlia_kyrgyzstancev_i_inostrancev.html'))
-    print(findArticles(getHtml(BASE_URL))[0])
+    getDetails('https://kaktus.media/doc/474734_marshrytchik_kotoryy_obrashalsia_k_prezidenty_peredymal_video.html')

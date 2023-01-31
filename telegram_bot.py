@@ -25,19 +25,11 @@ but3=types.KeyboardButton('Описание')
 but4=types.KeyboardButton('Фото')
 kb2.add(but3,but4)
 
-# @bot.message_handler(commands=['get_info','info'])
-def get_user_info():
-    marks_inline=types.InlineKeyboardMarkup()
-    item_description=types.InlineKeyboardButton(text='Подробнее',callback_data='description')
-    marks_inline.add(item_description)
-    return marks_inline
+kbStart=types.ReplyKeyboardMarkup(resize_keyboard=True)
+butStart=types.KeyboardButton('/start')
+kbStart.add(butStart)
 
-# kb=get_user_info()
 
-# @bot.callback_query_handler(func=lambda call:True)
-# def answer(call):
-#     if call.data == 'description':
-#         get
 
 
 @bot.message_handler(commands=['start'])
@@ -51,11 +43,15 @@ def starting(message):
     var2=all_parsed_artics   ###     <TUPLE>    ( [0]-LIST-NAMES    [1]-LIST-LINKS    [2]-LIST-VIEWS     [3]-LIST-IMAGES )
     for x in range(0,len(all_articles)-1):
         msg1=bot.send_photo(message.chat.id,var2[3][x],caption=f'№{x+1}\n{var2[0][x]}\nПросмотров: {var2[2][x]}\n\n{var2[1][x]}')
-    
-        
-
     var1=bot.send_message(message.chat.id,'Напишите номер статьи, которой хотите посмотреть...',reply_markup=kbQ)
     bot.register_next_step_handler(var1,clarifyInfo)
+
+
+@bot.message_handler(commands=['stop'])
+def stop(message):
+    bot.send_message(message.chat.id,'До свидания!\nЧтобы запустить бота снова,\nнапишите /start',reply_markup=kbStart)
+
+
 
 def clarifyInfo(message):
         # var1=PA.findArticles(PA.getHtml(PA.BASE_URL))
