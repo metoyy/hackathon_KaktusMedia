@@ -155,12 +155,6 @@ def more(message,number_art):
         bot.register_next_step_handler(message,more,number_art)
 
 
-# def neTo(message,number_art):
-#     if message.text !=
-
-
-
-
 
 
 
