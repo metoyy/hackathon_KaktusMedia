@@ -1,0 +1,4 @@
+pytelegrambotapi
+bs4
+lxml
+requests
