@@ -3,7 +3,6 @@ from telebot import types
 import parsing_functions as PA
 token='6118639062:AAEo1Y_t4ThlBI9n_ZzxQrC_mjVLNV0kWf0'
 bot=telebot.TeleBot(token)
-
 all_articles=''
 all_parsed_artics=''
 kb1=types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -68,8 +67,6 @@ def clarifyInfo(message):
                 bot.send_photo(message.chat.id,all_parsed_artics[3][var2],caption=f'№{var2+1}\n{all_parsed_artics[0][var2]}\nПросмотров: {all_parsed_artics[2][var2]}\n\n{all_parsed_artics[1][var2]}',reply_markup=types.ReplyKeyboardRemove())
                 var5=bot.send_message(message.chat.id,'Что хотите посмотреть?',reply_markup=kb9)
                 bot.register_next_step_handler(var5,more,var2)
-
-                # var3=PA.getDetails(all_parsed_artics[1][var2-1])
             else:
                 msg2=bot.send_message(message.chat.id,f'Число должно быть от 1 до {len(all_articles)-1}',reply_markup=kbQ)
                 bot.register_next_step_handler(msg2,clarifyInfo)
@@ -86,17 +83,17 @@ def details(message,number_of_article):
     getphoto=PA.getPhoto(all_parsed_artics[1][number_of_article])
     if message.text == 'Фото':
         try:
-            if type(all_parsed_artics[3][number_of_article])==type(list):
-                for x in getphoto:
-                    bot.send_photo(message.chat.id,x,reply_markup=types.ReplyKeyboardRemove())
-            else:
-                if getphoto:
+            if getphoto:
+                if type(getphoto)==type(list()):
+                    for x in getphoto:
+                        bot.send_photo(message.chat.id,x,reply_markup=types.ReplyKeyboardRemove())
+                elif type(getphoto)==type(str()):
                     bot.send_photo(message.chat.id,getphoto,reply_markup=types.ReplyKeyboardRemove())
-                else:
-                    bot.send_message(message.chat.id,'Фото нет!',reply_markup=types.ReplyKeyboardRemove())
+            else:
+                bot.send_message(message.chat.id,'Фото нет!',reply_markup=types.ReplyKeyboardRemove())
             var4=bot.send_message(message.chat.id,'Сначала?',reply_markup=kb1)
             bot.register_next_step_handler(var4,more,number_of_article)
-        except:
+        except KeyboardInterrupt:
             bot.send_message(message.chat.id,'Вложенных фото нет!')
             var4=bot.send_message(message.chat.id,'Сначала?',reply_markup=kb1)
             bot.register_next_step_handler(var4,more,number_of_article)
@@ -104,9 +101,14 @@ def details(message,number_of_article):
     elif message.text == 'Описание':
         var3=PA.getDetails(all_parsed_artics[1][number_of_article])
         if len(var3)>4095:
-            bot.send_message(message.chat.id,var3,reply_markup=types.ReplyKeyboardRemove())
+            if len(var3)>4095*2:
+                bot.send_message(message.chat.id,'Описание слишком длинное! Не покажу)))')
+            var7=var3[0:4095]
+            var8=var3[4095:]
+            bot.send_message(message.chat.id,var7)            
+            bot.send_message(message.chat.id,var8)
         else:
-            bot.send_message(message.chat.id,'Описание слишком длинное! Не покажу)))')
+            bot.send_message(message.chat.id,var3,reply_markup=types.ReplyKeyboardRemove())            
         var4=bot.send_message(message.chat.id,'Сначала?',reply_markup=kb0)
         bot.register_next_step_handler(var4,more,number_of_article)
     else:
@@ -139,4 +141,4 @@ def more(message,number_art):
 
 
 if __name__=='__main__':
-    bot.polling(none_stop=True, interval=0)
+    bot.polling(none_stop=True)

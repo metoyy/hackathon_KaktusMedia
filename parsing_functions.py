@@ -93,7 +93,9 @@ def getPhoto(url):
         list_ofPhotos=var1.find('div',class_='Gallery Gallery--multi').find_all('a')
         try:
             listPhotos=[]
+            # print(list_ofPhotos)
             for x in list_ofPhotos:
+                # print(x.get('href'))
                 j=x.get('href').strip()
                 listPhotos.append(j)
             set_of_photos=set(listPhotos)
