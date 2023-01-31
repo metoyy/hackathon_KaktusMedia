@@ -17,7 +17,7 @@ def findArticles(html):
     catSoup=BS(html,'lxml')
     articles=catSoup.find('div',class_='Tag--articles').findAll('div',class_='Tag--article')
     for x in range(len(articles)):
-        if len(articles)>21:
+        if len(articles)>20:
             articles.pop()
     return articles
 
@@ -78,7 +78,7 @@ def getPhoto(url):
             photosList=list(set_of_photos)
             return photosList
         except:
-            return 1
+            return False
     except:
         try:
             photo=var1.find('div',class_='Gallery--single-image').find('a').get('href')
@@ -89,7 +89,18 @@ def getPhoto(url):
 
 
 
-
+def getVideo(url):
+    list_of_vids=[]
+    try:
+        videoSoup=BS(getHtml(url),'lxml')
+        var1=videoSoup.find('div',class_='BbCode')
+        var2=var1.find('div',class_='bb-video').find('div',class_='bb-video-content').findAll('iframe')
+        for x in var2:
+            j=x.get('src')
+            list_of_vids.append(j.strip())
+        return list_of_vids
+    except:
+        return False
 
 
 
@@ -99,4 +110,4 @@ def getPhoto(url):
 
 
 if __name__=='__main__':
-    getDetails('https://kaktus.media/doc/474734_marshrytchik_kotoryy_obrashalsia_k_prezidenty_peredymal_video.html')
+    getVideo('https://kaktus.media/doc/474710_genprokyror_iskluchil_davlenie_na_sledovateley_v_kempir_abadskom_dele.html')
