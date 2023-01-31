@@ -103,7 +103,10 @@ def details(message,number_of_article):
 
     elif message.text == 'Описание':
         var3=PA.getDetails(all_parsed_artics[1][number_of_article])
-        bot.send_message(message.chat.id,var3,reply_markup=types.ReplyKeyboardRemove())
+        if len(var3)>4095:
+            bot.send_message(message.chat.id,var3,reply_markup=types.ReplyKeyboardRemove())
+        else:
+            bot.send_message(message.chat.id,'Описание слишком длинное! Не покажу)))')
         var4=bot.send_message(message.chat.id,'Сначала?',reply_markup=kb0)
         bot.register_next_step_handler(var4,more,number_of_article)
     else:
