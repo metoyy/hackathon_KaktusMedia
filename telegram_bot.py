@@ -1,7 +1,7 @@
 import telebot
 from telebot import types
 import parsing_functions as PA
-token='6118639062:AAEo1Y_t4ThlBI9n_ZzxQrC_mjVLNV0kWf0'
+token='api token'
 bot=telebot.TeleBot(token)
 all_articles=''
 all_parsed_artics=''
